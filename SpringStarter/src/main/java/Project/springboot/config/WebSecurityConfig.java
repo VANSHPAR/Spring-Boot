@@ -1,10 +1,11 @@
 package Project.springboot.config;
 
-import Project.springboot.Controller.AccountController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
@@ -21,19 +22,42 @@ public class WebSecurityConfig {
             "/images/**",
             "/js/**",
     };
-
+    @Bean
+    public static PasswordEncoder passwordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        
-        http
-        .csrf(csrf -> csrf.disable()) // Disable CSRF for H2 console
-        .headers(headers -> headers.frameOptions().disable()) // Allow H2 Console Frames
-        .authorizeHttpRequests(auth -> auth
-            .requestMatchers(WHITELIST).permitAll() // Whitelist endpoints
-            .anyRequest().authenticated() // All other requests require authentication
-        );
+
+        http.authorizeHttpRequests(auth -> auth.requestMatchers(WHITELIST)
+        .permitAll()
+        .anyRequest()
+        .authenticated() );
+
+
+
+        http.formLogin(formLogin -> formLogin.loginPage("/login")
+        .loginProcessingUrl("/login")
+        .usernameParameter("email")
+        .passwordParameter("password")
+        .defaultSuccessUrl("/",true)
+        .failureUrl("/login?error")
+        .permitAll()    );
+       
+        http.logout(logout -> logout.logoutUrl("/logout")
+        .logoutSuccessUrl("logout?success")).httpBasic(null);
+
+        
+       
+       
+
+        
+
+        http.csrf(csrf -> csrf.disable());
+        http.headers(headers -> headers.disable());
+
 
         return http.build();
     }
-
 }
