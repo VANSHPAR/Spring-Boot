@@ -1,13 +1,13 @@
 <html></html><!DOCTYPE html>
 <html lang="en"
 xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/springsecurity">
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
  <!-- header section strats -->
  <header class="header_section">
     <div class="container">
       <nav class="navbar navbar-expand-lg custom_nav-container ">
-        <a class="navbar-brand" href="index.html">
+        <a class="navbar-brand" th:href="index.html">
           <span>
             Demo
           </span>
@@ -22,11 +22,21 @@ xmlns:sec="http://www.thymeleaf.org/extras/springsecurity">
             <li class="nav-item ">
               <a class="nav-link" href="/">Home </a>
             </li>
-           
-           
+           <span sec:authorize="!isAuthenticated()">
             <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
+              <a class="nav-link" th:href="@{/register}">Register</a>
             </li>
+           </span>
+           <span sec:authorize="!isAuthenticated()">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/login}">login</a>
+            </li>
+           </span>
+           <span sec:authorize="isAuthenticated()">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/profile}">Profile</a>
+            </li>
+           </span>
           </ul>
          </div>
       </nav>
