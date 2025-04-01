@@ -24,24 +24,44 @@ xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
             </li>
            <span sec:authorize="!isAuthenticated()">
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/register}">Register</a>
+              <a class="nav-link" href="/register">Register</a>
             </li>
            </span>
            <span sec:authorize="!isAuthenticated()">
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/login}">login</a>
+              <a class="nav-link" href="/login">login</a>
             </li>
            </span>
            <span sec:authorize="isAuthenticated()">
             <li class="nav-item">
-              <a class="nav-link" th:href="@{/profile}">Profile</a>
+              <a class="nav-link" href="/profile">Profile</a>
             </li>
            </span>
+           <span sec:authorize="hasRole('ROLE_ADMIN')">
+            <li class="nav-item">
+              <a class="nav-link" href="/admin">admin</a>
+            </li>
+           </span>
+           <span sec:authorize="hasAuthority('ACCESS_ADMIN_PANEL')">
+            <li class="nav-item">
+              <a class="nav-link" href="/admin">admin</a>
+            </li>
+           </span>
+           <span sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_EDITOR')">
+            <li class="nav-item">
+              <a class="nav-link" href="/editor">editor</a>
+            </li>
+           </span>
+            <span sec:authorize="isAuthenticated()">
+            <li class="nav-item">
+              <a class="nav-link" href="/logout">logout</a>
+            </li>
+           </span> 
           </ul>
          </div>
       </nav>
     </div>
   </header>
-  <!-- end header section -->
+ end header section
 
 </html>
