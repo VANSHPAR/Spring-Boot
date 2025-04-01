@@ -18,7 +18,6 @@ public class AccountController {
 
     @GetMapping("/register")
     public String register(Model model){
-
         Account account=new Account();
        model.addAttribute("account", account);
         return "register";
@@ -34,4 +33,17 @@ public class AccountController {
     public String login(Model model){
        return "login";
     }
+
+    @GetMapping("/profile")
+    public String profile(Model model){
+       return "profile";
+    }
+
+    @GetMapping("/test")
+    public String test(Model model){
+       return "test";
+    }
+
+
+    //pot mappingg for login done by spring boot by impllementing  useruserdetailssservice
 }

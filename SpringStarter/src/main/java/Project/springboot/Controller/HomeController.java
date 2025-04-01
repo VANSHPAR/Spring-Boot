@@ -14,11 +14,18 @@ import Project.springboot.services.PostService;
 public class HomeController {
     @Autowired
     private PostService postService;
+
     @GetMapping("/")
     public String  home(Model model){
         List<Post> posts=postService.getAll();
         model.addAttribute("posts", posts);
         return "home";
     }
+
+    @GetMapping("/editor")
+    public String  editor(Model model){
+        return "editor";
+    }
+
     
 }
