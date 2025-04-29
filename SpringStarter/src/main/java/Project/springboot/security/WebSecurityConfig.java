@@ -9,6 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import Project.springboot.util.constants.Privillages;
+
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -22,6 +25,7 @@ public class WebSecurityConfig {
             "/fonts/**",
             "/images/**",
             "/js/**",
+           
     };
     @Bean
     public static PasswordEncoder passwordEncoder(){
@@ -30,12 +34,13 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
        
-
         http.authorizeHttpRequests(auth -> auth.requestMatchers(WHITELIST)
-        .permitAll()
-        .anyRequest()
-        .authenticated() );
-
+        .permitAll() 
+       .requestMatchers("/profile/**").authenticated()
+       .requestMatchers("/admin/**").hasRole("ADMIN")
+       .requestMatchers("/editor/**").hasAnyRole("ADMIN","EDITOR")
+       .requestMatchers("/test").hasAuthority(Privillages.ACCESS_ADMIN_PANEL.getprivillage())
+        );
 
 
         http.formLogin(formLogin -> formLogin.loginPage("/login")
@@ -47,8 +52,11 @@ public class WebSecurityConfig {
         .permitAll()    );
        
         http.logout(logout -> logout.logoutUrl("/logout")
-        .logoutSuccessUrl("/logout?success"));
+        .logoutSuccessUrl("/"));
 
+      
+       
+       
         http.httpBasic(Customizer.withDefaults());
     
 
