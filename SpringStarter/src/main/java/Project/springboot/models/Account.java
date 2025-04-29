@@ -22,16 +22,18 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Account {
-      @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String email;
+
     private String password;
+
     private String firstname;
+
     private String lastname;
 
-    
     private String role;
 
     @OneToMany(mappedBy = "account")  //one account can has many posts hence
