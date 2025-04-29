@@ -42,9 +42,11 @@ public class AccountService implements UserDetailsService{
        if(!optionalAccount.isPresent()){
         throw new UsernameNotFoundException("Account not found");
        } 
+       
        Account account=optionalAccount.get();
+
        List<GrantedAuthority> grantedAuthority=new  ArrayList<>();
-       grantedAuthority.add(new SimpleGrantedAuthority("account.getRole()"));
+       grantedAuthority.add(new SimpleGrantedAuthority(account.getRole()));
 
        for(Authority auth: account.getAuthorities()){
         grantedAuthority.add(new SimpleGrantedAuthority(auth.getName()));
