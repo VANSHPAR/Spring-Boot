@@ -1,6 +1,7 @@
 package com.example.TodoApiSpring;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,15 +18,24 @@ public class TodoController {
     }
 
     @GetMapping("/todos")
-    public List<Todo> getTodos(){
-        return todoList;
+    public ResponseEntity<List<Todo>> getTodos(){
+        return ResponseEntity.ok(todoList);
     }
 
-    @PostMapping("/todos")
-    @ResponseStatus(HttpStatus.CREATED)
-    public  void createTodo(@RequestBody Todo newTodo){
-        todoList.add(newTodo);
 
+//    @ResponseStatus(HttpStatus.CREATED )
+    @PostMapping("/todos")
+    public ResponseEntity<Todo> createTodo(@RequestBody Todo newTodo){
+        todoList.add(newTodo);
+        return ResponseEntity.ok(newTodo);
+
+    }
+    @GetMapping("/todos/{todoid} ")
+    public ResponseEntity<Todo> getTodoById(@PathVariable Long todoid){
+        for(Todo x : todoList){
+            if(x.getId()==todoid) return ResponseEntity.ok(x);
+        }
+      return ResponseEntity.notFound().build();
     }
 
 }
